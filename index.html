@@ -718,13 +718,47 @@
     let pendingImage = null;
 
     function defaultData() {
-      const now = new Date();
-      const month = formatMonth(now);
       return {
-        currentMonth: month,
+        currentMonth: '2026-06',
         monthlyBudgets: { '01': 600, '02': 500, '03': 1500, '04': 400 },
         cat01Rollover: 0,
-        records: []
+        records: [
+          { id:  1, date: '2026-06-02', desc: 'A3挂历',                amount: 6.37,  cat: '01', emoji: '', imageBase64: null },
+          { id:  2, date: '2026-06-03', desc: '早餐·麦当劳',           amount: 8.99,  cat: '03', emoji: '', imageBase64: null },
+          { id:  3, date: '2026-06-03', desc: '芭芭农场密封罐×2',      amount: 0.01,  cat: '02', emoji: '', imageBase64: null },
+          { id:  4, date: '2026-06-03', desc: '图书馆红茶',            amount: 32,    cat: '03', emoji: '', imageBase64: null },
+          { id:  5, date: '2026-06-03', desc: '午餐·杂蔬虾仁紫米饭',   amount: 11.5,  cat: '03', emoji: '', imageBase64: null },
+          { id:  6, date: '2026-06-03', desc: '嘟嘟夏日猫窝',          amount: 25.02, cat: '04', emoji: '', imageBase64: null },
+          { id:  7, date: '2026-06-03', desc: '晚餐·棒约翰',           amount: 64,    cat: '03', emoji: '', imageBase64: null },
+          { id:  8, date: '2026-06-04', desc: '冰拿铁',                amount: 29.9,  cat: '03', emoji: '', imageBase64: null },
+          { id:  9, date: '2026-06-04', desc: '肠虫清',                amount: 11.76, cat: '03', emoji: '', imageBase64: null },
+          { id: 10, date: '2026-06-04', desc: '朋友辣条',              amount: 18.32, cat: '04', emoji: '', imageBase64: null },
+          { id: 11, date: '2026-06-04', desc: '午餐·黄焖鸡',           amount: 26,    cat: '03', emoji: '', imageBase64: null },
+          { id: 12, date: '2026-06-04', desc: '充话费',                amount: 91.12, cat: '03', emoji: '', imageBase64: null },
+          { id: 13, date: '2026-06-05', desc: '午餐',                  amount: 19.3,  cat: '03', emoji: '', imageBase64: null },
+          { id: 14, date: '2026-06-05', desc: '上影节电影票',          amount: 140,   cat: '02', emoji: '', imageBase64: null },
+          { id: 15, date: '2026-06-05', desc: '音乐会',                amount: 160,   cat: '02', emoji: '', imageBase64: null },
+          { id: 16, date: '2026-06-05', desc: '虹口糕团店',            amount: 15.78, cat: '03', emoji: '', imageBase64: null },
+          { id: 17, date: '2026-06-05', desc: '晚餐',                  amount: 33.33, cat: '03', emoji: '', imageBase64: null },
+          { id: 18, date: '2026-06-05', desc: '打车',                  amount: 71.27, cat: '03', emoji: '', imageBase64: null },
+          { id: 19, date: '2026-06-05', desc: '八院挂号',              amount: 3,     cat: '03', emoji: '', imageBase64: null },
+          { id: 20, date: '2026-06-05', desc: '霸王茶姬×2',            amount: 31.48, cat: '03', emoji: '', imageBase64: null },
+          { id: 21, date: '2026-06-06', desc: 'COCO奶茶',              amount: 17.4,  cat: '03', emoji: '', imageBase64: null },
+          { id: 22, date: '2026-06-08', desc: '午餐·麦当劳',           amount: 33.4,  cat: '03', emoji: '', imageBase64: null },
+          { id: 23, date: '2026-06-09', desc: '午餐·食其家',           amount: 23,    cat: '03', emoji: '', imageBase64: null },
+          { id: 24, date: '2026-06-09', desc: '公交卡充值',            amount: 100,   cat: '03', emoji: '', imageBase64: null },
+          { id: 25, date: '2026-06-09', desc: '晚餐·鸡柳',             amount: 15.98, cat: '03', emoji: '', imageBase64: null },
+          { id: 26, date: '2026-06-10', desc: '午餐·肯德基',           amount: 22.97, cat: '03', emoji: '', imageBase64: null },
+          { id: 27, date: '2026-06-10', desc: '凡士林唇膏',            amount: 11.29, cat: '03', emoji: '', imageBase64: null },
+          { id: 28, date: '2026-06-10', desc: '晚餐·六姐',             amount: 74.17, cat: '03', emoji: '', imageBase64: null },
+          { id: 29, date: '2026-06-11', desc: 'Tims咖啡',              amount: 16.75, cat: '03', emoji: '', imageBase64: null },
+          { id: 30, date: '2026-06-11', desc: '午餐·肯德基',           amount: 14.9,  cat: '03', emoji: '', imageBase64: null },
+          { id: 31, date: '2026-06-12', desc: '早餐',                  amount: 4.82,  cat: '03', emoji: '', imageBase64: null },
+          { id: 32, date: '2026-06-12', desc: '奶茶',                  amount: 59.1,  cat: '03', emoji: '', imageBase64: null },
+          { id: 33, date: '2026-06-12', desc: '午餐·滨寿司',           amount: 42.32, cat: '03', emoji: '', imageBase64: null },
+          { id: 34, date: '2026-06-12', desc: '晚餐·临榆炸鸡腿',       amount: 25.2,  cat: '03', emoji: '', imageBase64: null },
+          { id: 35, date: '2026-06-13', desc: 'Tims咖啡',              amount: 21.1,  cat: '03', emoji: '', imageBase64: null }
+        ]
       };
     }
 
