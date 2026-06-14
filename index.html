@@ -60,7 +60,7 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .brand {
@@ -127,7 +127,7 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .pill {
@@ -145,8 +145,8 @@
     .hero {
       background: var(--sage-light);
       border-radius: var(--radius);
-      padding: 22px 20px 18px;
-      margin-bottom: 14px;
+      padding: 18px 20px 14px;
+      margin-bottom: 10px;
       position: relative;
       overflow: hidden;
     }
@@ -172,16 +172,16 @@
 
     .hero-amount {
       font-family: 'DM Serif Display', serif;
-      font-size: 42px;
+      font-size: 38px;
       color: var(--ink);
       line-height: 1.1;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .hero-sub {
       font-size: 12px;
       color: var(--muted);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .progress-track {
@@ -202,13 +202,13 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .stat-card {
       background: var(--warm);
       border-radius: var(--radius-sm);
-      padding: 14px 12px;
+      padding: 12px 10px;
       text-align: center;
     }
 
@@ -250,26 +250,26 @@
     .cat-card {
       background: var(--warm);
       border-radius: var(--radius-sm);
-      padding: 16px;
-      margin-bottom: 10px;
+      padding: 12px 14px;
+      margin-bottom: 7px;
     }
 
     .cat-header {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 7px;
     }
 
     .cat-badge {
-      width: 36px;
-      height: 36px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'DM Serif Display', serif;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       flex-shrink: 0;
       color: #fff;
@@ -284,45 +284,45 @@
 
     .cat-name {
       font-family: 'DM Serif Display', serif;
-      font-size: 16px;
+      font-size: 15px;
       color: var(--ink);
     }
 
     .cat-sub {
       font-size: 11px;
       color: var(--muted);
-      margin-top: 1px;
+      margin-top: 0;
     }
 
     .cat-amounts {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
 
-    .cat-amounts .spent { font-family: 'DM Serif Display', serif; font-size: 14px; color: var(--ink); }
+    .cat-amounts .spent { font-family: 'DM Serif Display', serif; font-size: 12px; color: var(--ink); }
 
     .cat-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .remain-badge {
-      font-size: 11px;
-      padding: 3px 10px;
+      font-size: 10px;
+      padding: 2px 8px;
       border-radius: 999px;
       background: var(--sage-light);
       color: var(--sage-dark);
     }
 
     .warn-badge {
-      font-size: 11px;
-      padding: 3px 10px;
+      font-size: 10px;
+      padding: 2px 8px;
       border-radius: 999px;
       background: var(--warn-light);
       color: var(--warn);
@@ -334,7 +334,7 @@
     .cat-progress .progress-fill.amber { background: var(--amber); }
 
     /* Banners */
-    .banners { margin-bottom: 16px; }
+    .banners { margin-bottom: 10px; }
 
     .banner {
       border-radius: var(--radius-sm);
@@ -344,8 +344,12 @@
       line-height: 1.45;
     }
 
-    .banner.warn { background: var(--warn-light); color: var(--warn); }
-    .banner.encourage { background: var(--purple-light); color: var(--purple); }
+    .banner {
+      background: var(--cream);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .banner.warn { color: var(--warn); }
+    .banner.encourage { color: var(--sage-dark); }
 
     /* Records */
     .records-section { margin-bottom: 16px; }
@@ -365,7 +369,7 @@
       font-size: 12px;
       color: var(--muted);
       white-space: nowrap;
-      width: 120px;
+      width: 128px;
       flex-shrink: 0;
     }
 
@@ -494,24 +498,24 @@
     .monthly-total {
       background: var(--ink);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
 
     .monthly-total .label {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--hint);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .monthly-total .value {
       font-family: 'DM Serif Display', serif;
-      font-size: 24px;
+      font-size: 20px;
       color: #fff;
     }
 
@@ -645,7 +649,7 @@
       width: 100%;
       max-width: 480px;
       height: 64px;
-      background: var(--warm);
+      background: var(--cream);
       border-top: 1px solid var(--hint);
       display: flex;
       align-items: center;
@@ -898,7 +902,8 @@
 
     function formatDateCN(dateStr) {
       const d = new Date(dateStr + 'T00:00:00');
-      return `${d.getMonth() + 1}月${d.getDate()}日 · ${WEEKDAYS[d.getDay()]}`;
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${d.getMonth() + 1}月${dd}日 · ${WEEKDAYS[d.getDay()]}`;
     }
 
     function formatDateShort(dateStr) {
