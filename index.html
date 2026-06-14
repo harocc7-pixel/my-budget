@@ -598,6 +598,23 @@
     .submit-btn:hover { opacity: 0.85; }
     .submit-btn:active { opacity: 0.7; }
 
+    .reset-btn {
+      display: block;
+      width: 100%;
+      border: 1px dashed var(--hint);
+      border-radius: 12px;
+      padding: 10px;
+      background: transparent;
+      color: var(--hint);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.15s;
+    }
+
+    .reset-btn:hover { border-color: var(--coral); color: var(--coral); }
+
     .hero .progress-fill { background: var(--sage-dark); }
   </style>
 </head>
@@ -698,6 +715,8 @@
       </div>
       <button type="button" class="submit-btn" id="submitBtn">记录这笔消费</button>
     </div>
+
+    <button type="button" class="reset-btn" id="resetBtn">↻ 重置并导入历史数据</button>
   </div>
 
   <script>
@@ -765,7 +784,22 @@
     function loadData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          // 确保历史数据一定存在：记录数不足35条时自动补全
+          if (Array.isArray(parsed.records) && parsed.records.length >= 35) {
+            return parsed;
+          }
+          // 合并历史数据：保留用户新增记录，补全缺失的历史记录
+          const defaults = defaultData();
+          const existingIds = new Set((parsed.records || []).map(r => r.id));
+          const merged = defaults.records.filter(r => !existingIds.has(r.id));
+          parsed.records = [...merged, ...(parsed.records || [])];
+          parsed.currentMonth = defaults.currentMonth;
+          parsed.monthlyBudgets = defaults.monthlyBudgets;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+          return parsed;
+        }
       } catch (e) {}
       return defaultData();
     }
@@ -1150,6 +1184,15 @@
     });
 
     // Init
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      if (confirm('确定要重置所有数据并导入历史账单吗？当前数据将被覆盖。')) {
+        localStorage.removeItem(STORAGE_KEY);
+        const fresh = defaultData();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
+        location.reload();
+      }
+    });
+
     document.getElementById('dateInput').value = new Date().toISOString().slice(0, 10);
     initCatButtons();
     render();
