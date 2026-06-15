@@ -337,6 +337,69 @@
       color: var(--warn);
     }
 
+    /* Cat card expand */
+    .cat-card { cursor: pointer; }
+    .cat-expand-chevron {
+      font-size: 14px;
+      color: var(--hint);
+      transition: transform 0.3s ease;
+      margin-left: auto;
+    }
+    .cat-expand-chevron.open { transform: rotate(90deg); }
+
+    .cat-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .cat-expand.open {
+      max-height: 600px;
+    }
+
+    .cat-expand-inner {
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+
+    .cat-expand-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .cat-expand-item:last-child { border-bottom: none; }
+
+    .cat-expand-desc {
+      font-size: 15px;
+      color: var(--ink);
+      flex: 1;
+      min-width: 0;
+      padding-right: 12px;
+    }
+
+    .cat-expand-date {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .cat-expand-amount {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      flex-shrink: 0;
+    }
+
+    .cat-expand-empty {
+      font-size: 13px;
+      color: var(--hint);
+      text-align: center;
+      padding: 12px 0;
+    }
+
     .cat-progress .progress-fill.purple { background: var(--purple); }
     .cat-progress .progress-fill.coral { background: var(--coral); }
     .cat-progress .progress-fill.sage { background: var(--sage); }
@@ -1051,8 +1114,28 @@
           badge = `<span class="warn-badge">⚠️ 超支 ${formatMoney(-remain)}</span>`;
         }
 
+        // 该类目当月记录
+        const catRecords = recordsInMonth(month)
+          .filter(r => r.cat === id)
+          .sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+
+        let recordsHtml = '';
+        if (catRecords.length === 0) {
+          recordsHtml = '<div class="cat-expand-empty">暂无消费记录</div>';
+        } else {
+          recordsHtml = catRecords.map(r => `
+            <div class="cat-expand-item">
+              <div class="cat-expand-desc">
+                <div>${escapeHtml(r.desc)}</div>
+                <div class="cat-expand-date">${formatDateShort(r.date)}</div>
+              </div>
+              <div class="cat-expand-amount">${formatMoney(r.amount)}</div>
+            </div>
+          `).join('');
+        }
+
         return `
-          <div class="cat-card">
+          <div class="cat-card" data-cat="${id}">
             <div class="cat-header">
               <div class="cat-badge ${cat.color}">${id}</div>
               <div class="cat-info">
@@ -1067,10 +1150,27 @@
             <div class="progress-track cat-progress">
               <div class="progress-fill ${cat.color}" style="width:${pct}%"></div>
             </div>
-            <div class="cat-footer">${badge}</div>
+            <div class="cat-footer">
+              ${badge}
+              <span class="cat-expand-chevron">›</span>
+            </div>
+            <div class="cat-expand">
+              <div class="cat-expand-inner">${recordsHtml}</div>
+            </div>
           </div>
         `;
       }).join('');
+
+      // 展开/收起
+      document.querySelectorAll('.cat-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const expand = card.querySelector('.cat-expand');
+          const chevron = card.querySelector('.cat-expand-chevron');
+          const isOpen = expand.classList.contains('open');
+          expand.classList.toggle('open', !isOpen);
+          chevron.classList.toggle('open', !isOpen);
+        });
+      });
 
       // Banners
       const banners = [];
