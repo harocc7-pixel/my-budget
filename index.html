@@ -2,40 +2,31 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>my budget · 我的记账本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>my budget · 主编的账簿</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root {
-      --sage: #8FAF8A;
-      --sage-light: #EEF3EC;
-      --sage-mid: #C8DAC4;
-      --sage-dark: #5C7A58;
-      --cream: #FAF8F4;
-      --warm: #F2EDE6;
-      --ink: #2C2C28;
-      --muted: #8A8880;
-      --hint: #BDBBB6;
-      --purple: #7F77DD;
-      --purple-light: #EDE9FC;
-      --coral: #D85A30;
-      --coral-light: #FCF0EC;
-      --amber: #BA7517;
-      --amber-light: #FAF3E5;
-      --warn: #E07B2E;
-      --warn-light: #FFF4EC;
-      --radius: 20px;
-      --radius-sm: 16px;
+      --bg:       #1C1B18;
+      --paper:    #F5F0E8;
+      --ink:      #F5F0E8;
+      --muted:    #9C9890;
+      --hint:     #6B6762;
+      --gold:     #C4944A;
+      --gold-dim: rgba(196,148,74,0.12);
+      --warn:     #D8553A;
+      --warn-dim: rgba(216,85,58,0.1);
+      --line:     rgba(245,240,232,0.08);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       font-size: 14px;
-      background: var(--cream);
+      background: var(--bg);
       color: var(--ink);
       line-height: 1.5;
       min-height: 100vh;
@@ -45,272 +36,260 @@
     .app {
       max-width: 480px;
       margin: 0 auto;
-      padding: 20px 16px 40px;
+      padding: 28px 20px 0;
     }
 
-    .serif { font-family: 'DM Serif Display', serif; }
-    .num { font-family: 'DM Serif Display', serif; font-variant-numeric: tabular-nums; }
+    /* ── Typography ── */
+    .serif {
+      font-family: 'DM Serif Display', serif;
+      font-variant-numeric: tabular-nums;
+    }
+    .num  {
+      font-family: 'DM Serif Display', serif;
+      font-variant-numeric: tabular-nums;
+    }
 
     /* ── Tab pages ── */
     .tab-page { display: none; padding-bottom: 80px; }
     .tab-page.active { display: block; }
 
-    /* Header */
-    .header {
+    /* ── Home: Header ── */
+    .home-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
+      align-items: flex-end;
+      margin-bottom: 40px;
     }
-
     .brand {
       font-family: 'DM Serif Display', serif;
-      font-size: 26px;
+      font-size: 22px;
       color: var(--ink);
       letter-spacing: -0.02em;
     }
-
-    .brand em {
-      font-style: italic;
-      color: var(--sage-dark);
-    }
-
-    .header-right {
-      text-align: right;
-    }
-
-    .date-badge {
+    .brand em { font-style: italic; color: var(--gold); }
+    .today-date {
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: 0.08em;
-      color: var(--muted);
+      color: var(--hint);
       text-transform: uppercase;
-      margin-bottom: 8px;
     }
 
-    .month-nav {
+    /* ── Month picker ── */
+    .month-picker {
       display: flex;
       align-items: center;
-      gap: 4px;
-      background: var(--warm);
-      border-radius: 999px;
-      padding: 4px 6px;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 28px;
     }
-
-    .month-nav button {
+    .month-picker button {
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--muted);
-      font-size: 16px;
-      width: 36px;
-      height: 36px;
+      color: var(--hint);
+      font-size: 18px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s;
+      transition: color 0.15s;
+      font-family: 'DM Serif Display', serif;
     }
-
-    .month-nav button:hover { background: var(--sage-light); color: var(--sage-dark); }
-
-    .month-label {
+    .month-picker button:hover { color: var(--gold); }
+    .month-picker-label {
       font-family: 'DM Serif Display', serif;
       font-size: 15px;
-      min-width: 56px;
-      text-align: center;
       color: var(--ink);
+      min-width: 60px;
+      text-align: center;
+      letter-spacing: 0.02em;
     }
 
-    /* Pills */
-    .pills {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .pill {
-      background: var(--warm);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 12px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .pill strong { color: var(--ink); font-weight: 600; }
-
-    /* Hero */
+    /* ── Hero ── */
     .hero {
-      background: var(--sage-light);
-      border-radius: var(--radius);
-      padding: 18px 20px 14px;
-      margin-bottom: 10px;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 32px;
     }
-
-    .hero-deco {
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: var(--sage-mid);
-      opacity: 0.35;
-    }
-
     .hero-label {
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--sage-dark);
-      margin-bottom: 6px;
-    }
-
-    .hero-amount {
-      font-family: 'DM Serif Display', serif;
-      font-size: 38px;
-      color: var(--ink);
-      line-height: 1.1;
-      margin-bottom: 2px;
-    }
-
-    .hero-sub {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    .progress-track {
-      height: 4px;
-      background: var(--sage-mid);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.4s ease;
-    }
-
-    /* Stats row */
-    .stats-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .stat-card {
-      background: var(--warm);
-      border-radius: var(--radius-sm);
-      padding: 12px 10px;
-      text-align: center;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--hint);
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      color: var(--ink);
-    }
-
-    .stat-extra {
-      font-size: 10px;
-      color: var(--sage-dark);
-      margin-top: 3px;
-    }
-
-    /* Category cards */
-    .section-title {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.16em;
       color: var(--hint);
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+    }
+    .hero-amount {
+      font-family: 'DM Serif Display', serif;
+      font-size: 72px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+    .hero .progress-track {
+      height: 1px;
+      background: var(--line);
+      border-radius: 0;
+      overflow: visible;
+      position: relative;
+    }
+    .hero .progress-fill {
+      height: 2px;
+      border-radius: 0;
+      background: var(--gold);
+      position: absolute;
+      top: -0.5px;
+      left: 0;
+      transition: width 0.6s ease;
+    }
+
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 48px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 20px 0;
+    }
+    .stat-card {
+      flex: 1;
+      text-align: center;
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      border-right: 1px solid var(--line);
+    }
+    .stat-card:last-child { border-right: none; }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--hint);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+    .stat-extra {
+      font-size: 10px;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    /* ── Banners ── */
+    .banners { margin-bottom: 32px; }
+    .banner {
+      background: var(--gold-dim);
+      border-left: 2px solid var(--gold);
+      border-radius: 0;
+      padding: 14px 16px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+      line-height: 1.5;
+      color: var(--gold);
+    }
+    .banner.warn {
+      background: var(--warn-dim);
+      border-left-color: var(--warn);
+      color: var(--warn);
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--hint);
+      text-transform: uppercase;
+      margin-bottom: 16px;
     }
     .section-title-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
     }
     .section-title-row .section-title { margin-bottom: 0; }
 
+    /* ── Budget: Category cards (ledger entries) ── */
     .cat-card {
-      background: var(--warm);
-      border-radius: var(--radius-sm);
-      padding: 18px 12px;
-      margin-bottom: 16px;
+      background: none;
+      border-radius: 0;
+      padding: 18px 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: background 0.2s;
     }
+    .cat-card:hover { background: rgba(245,240,232,0.02); }
 
     .cat-header {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 7px;
+      gap: 0;
+      margin-bottom: 6px;
     }
 
     .cat-badge {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      background: none !important;
       font-family: 'DM Serif Display', serif;
-      font-size: 12px;
+      font-size: 22px;
       font-weight: 400;
+      color: var(--hint);
       flex-shrink: 0;
-      color: #fff;
+      margin-right: 16px;
+      line-height: 1.2;
     }
-
-    .cat-badge.purple { background: var(--purple); }
-    .cat-badge.coral { background: var(--coral); }
-    .cat-badge.sage { background: var(--sage-dark); }
-    .cat-badge.amber { background: var(--amber); }
 
     .cat-info { flex: 1; min-width: 0; }
-
     .cat-name {
-      font-size: 16px;
-      font-weight: 600;
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
       color: var(--ink);
+      letter-spacing: -0.01em;
+      margin-bottom: 1px;
     }
-
     .cat-sub {
       font-size: 12px;
       font-weight: 400;
       color: var(--hint);
-      margin-top: 0;
     }
 
     .cat-amounts {
       display: flex;
       align-items: baseline;
-      gap: 1px;
+      gap: 2px;
       flex-shrink: 0;
       text-align: right;
+      padding-top: 2px;
     }
-
     .cat-amounts .spent {
-      font-size: 15px;
-      font-weight: 600;
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      font-weight: 400;
       color: var(--ink);
     }
-
     .cat-amounts .budget {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 400;
       color: var(--hint);
       white-space: nowrap;
@@ -320,34 +299,42 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
     }
-
-    .remain-badge {
-      font-size: 12px;
+    .remain-tag {
+      font-size: 11px;
       font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--sage-light);
-      color: var(--sage-dark);
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      background: none;
+      padding: 0;
+      border-radius: 0;
     }
+    .remain-tag.warn { color: var(--warn); }
 
-    .warn-badge {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--warn-light);
-      color: var(--warn);
+    /* Progress in cat card */
+    .cat-progress { margin-top: 8px; }
+    .cat-progress .progress-track {
+      height: 1px;
+      background: var(--line);
+      border-radius: 0;
     }
+    .cat-progress .progress-fill {
+      height: 2px;
+      border-radius: 0;
+      margin-top: -0.5px;
+    }
+    .cat-progress .progress-fill.purple,
+    .cat-progress .progress-fill.coral,
+    .cat-progress .progress-fill.sage,
+    .cat-progress .progress-fill.amber { background: var(--gold); }
+    .cat-progress .progress-fill.warn { background: var(--warn); }
 
-    /* Cat card expand */
-    .cat-card { cursor: pointer; }
+    /* Cat expand */
     .cat-expand-chevron {
       font-size: 14px;
       color: var(--hint);
       transition: transform 0.3s ease;
-      margin-left: auto;
     }
     .cat-expand-chevron.open { transform: rotate(90deg); }
 
@@ -359,33 +346,29 @@
     .cat-expand.open {
       max-height: 40vh;
       overflow-y: auto;
-      margin-top: 10px;
+      margin-top: 14px;
     }
-
-    /* Thin scrollbar */
-    .cat-expand.open::-webkit-scrollbar { width: 4px; }
+    .cat-expand.open::-webkit-scrollbar { width: 3px; }
     .cat-expand.open::-webkit-scrollbar-track { background: transparent; }
     .cat-expand.open::-webkit-scrollbar-thumb {
       background: var(--hint);
-      border-radius: 2px;
+      border-radius: 1px;
     }
 
     .cat-expand-inner {
-      background: rgba(0,0,0,0.03);
-      border-radius: 12px;
-      padding: 10px 12px;
+      background: rgba(245,240,232,0.03);
+      border-radius: 0;
+      padding: 12px 14px;
     }
-
     .cat-expand-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 52px;
+      height: 46px;
       padding: 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(245,240,232,0.05);
     }
     .cat-expand-item:last-child { border-bottom: none; }
-
     .cat-expand-desc {
       font-size: 14px;
       font-weight: 500;
@@ -395,98 +378,97 @@
       padding-right: 12px;
       line-height: 1.3;
     }
-
     .cat-expand-date {
       font-size: 11px;
       font-weight: 400;
       color: var(--hint);
       margin-top: 2px;
     }
-
     .cat-expand-amount {
+      font-family: 'DM Serif Display', serif;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 400;
       color: var(--ink);
       flex-shrink: 0;
     }
-
     .cat-expand-empty {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--hint);
       text-align: center;
-      padding: 12px 0;
+      padding: 16px 0;
     }
-
     .cat-expand-fade {
       position: sticky;
       bottom: 0;
       height: 24px;
-      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.03));
+      background: linear-gradient(to bottom, transparent, rgba(28,27,24,0.9));
       pointer-events: none;
-      margin: 0 -12px -10px;
-      border-radius: 0 0 12px 12px;
+      margin: 0 -14px -12px;
     }
 
-    .cat-progress .progress-fill.purple { background: var(--purple); }
-    .cat-progress .progress-fill.coral { background: var(--coral); }
-    .cat-progress .progress-fill.sage { background: var(--sage); }
-    .cat-progress .progress-fill.amber { background: var(--amber); }
+    /* Old badge classes kept for JS compatibility */
+    .remain-badge, .warn-badge { display: none; }
 
-    /* Banners */
-    .banners { margin-bottom: 10px; }
-
-    .banner {
-      border-radius: var(--radius-sm);
-      padding: 12px 16px;
-      font-size: 13px;
-      margin-bottom: 8px;
-      line-height: 1.45;
+    /* ── Monthly total ── */
+    .monthly-total {
+      background: rgba(245,240,232,0.04);
+      border-radius: 2px;
+      padding: 24px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+      margin-top: 4px;
+      border-left: 2px solid var(--gold);
     }
-
-    .banner {
-      background: var(--cream);
-      border: 1px solid rgba(0,0,0,0.06);
+    .monthly-total .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--hint);
+      text-transform: uppercase;
+      margin-bottom: 6px;
     }
-    .banner.warn { color: var(--warn); }
-    .banner.encourage { color: var(--sage-dark); }
+    .monthly-total .value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+    .monthly-total .remain .value { color: var(--gold); }
 
-    /* Records */
+    /* ── Records tab ── */
     .records-section { margin-bottom: 16px; }
-    .date-group { margin-bottom: 20px; }
-
+    .date-group { margin-bottom: 24px; }
     .date-divider {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       cursor: pointer;
       user-select: none;
       padding: 4px 0;
     }
-
     .date-divider .date-text {
       font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
       white-space: nowrap;
       width: 128px;
       flex-shrink: 0;
     }
-
     .date-divider .line {
       flex: 1;
       height: 1px;
-      background: var(--hint);
-      opacity: 0.4;
+      background: var(--line);
     }
-
     .date-divider .day-sum {
       font-family: 'DM Serif Display', serif;
       font-size: 13px;
-      color: var(--ink);
+      color: var(--muted);
       white-space: nowrap;
       flex-shrink: 0;
     }
-
     .date-divider .chevron {
       font-size: 11px;
       color: var(--hint);
@@ -496,13 +478,11 @@
       text-align: center;
     }
     .date-divider .chevron.open { transform: rotate(90deg); }
-
     .peak-tag {
       font-size: 10px;
-      color: var(--coral);
-      margin-left: 4px;
+      color: var(--warn);
+      margin-left: 6px;
     }
-
     .records-body { display: none; }
     .records-body.open { display: block; }
 
@@ -511,25 +491,16 @@
       align-items: center;
       gap: 12px;
       padding: 10px 0;
-      border-bottom: 1px solid rgba(189, 187, 182, 0.2);
+      border-bottom: 1px solid var(--line);
+      border-left: 2px solid var(--gold);
+      padding-left: 10px;
+      margin-bottom: 1px;
     }
-
     .record-item:last-of-type { border-bottom: none; }
 
-    .record-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .record-dot.purple { background: var(--purple); }
-    .record-dot.coral { background: var(--coral); }
-    .record-dot.sage { background: var(--sage); }
-    .record-dot.amber { background: var(--amber); }
+    .record-dot { display: none; }
 
     .record-info { flex: 1; min-width: 0; }
-
     .record-desc {
       font-size: 14px;
       color: var(--ink);
@@ -537,207 +508,171 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
     .record-meta {
       font-size: 11px;
       color: var(--hint);
-      margin-top: 2px;
+      margin-top: 3px;
     }
-
     .record-amount {
       font-family: 'DM Serif Display', serif;
       font-size: 15px;
       color: var(--ink);
       flex-shrink: 0;
     }
-
     .record-delete {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 14px;
-      opacity: 0.4;
+      font-size: 12px;
+      opacity: 0;
       padding: 6px;
-      min-width: 32px;
-      min-height: 32px;
-      border-radius: 8px;
+      border-radius: 2px;
       transition: opacity 0.15s;
+      color: var(--hint);
     }
-
-    .record-delete:hover { opacity: 1; }
-
+    .record-item:hover .record-delete,
+    .record-item:active .record-delete { opacity: 0.6; }
     .record-thumb {
       width: 36px;
       height: 36px;
-      border-radius: 8px;
+      border-radius: 2px;
       object-fit: cover;
       flex-shrink: 0;
     }
-
-    .day-total {
-      text-align: right;
-      font-size: 12px;
-      color: var(--muted);
-      padding: 6px 0 2px;
-    }
-
-    .day-total strong {
-      font-family: 'DM Serif Display', serif;
-      color: var(--ink);
-    }
-
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
+      padding: 64px 20px;
       color: var(--hint);
-      font-size: 14px;
-    }
-
-    /* Monthly total */
-    .monthly-total {
-      background: var(--ink);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0;
-    }
-
-    .monthly-total .label {
-      font-size: 10px;
-      color: var(--hint);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .monthly-total .value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 20px;
-      color: #fff;
-    }
-
-    .monthly-total .remain .value { color: var(--sage); }
-
-    /* Add form */
-    .add-section {
-      background: var(--warm);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-
-    .add-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
-      margin-bottom: 16px;
-    }
-
-    .upload-zone {
-      border: 2px dashed var(--sage-mid);
-      border-radius: var(--radius-sm);
-      padding: 24px;
-      text-align: center;
-      cursor: pointer;
-      margin-bottom: 14px;
-      transition: background 0.15s;
-      min-height: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      color: var(--muted);
       font-size: 13px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .upload-zone:hover { background: var(--sage-light); }
-
-    .upload-zone img {
-      max-width: 100%;
-      max-height: 120px;
-      border-radius: 8px;
-      object-fit: contain;
-    }
-
-    .upload-zone input { display: none; }
-
-    .form-group { margin-bottom: 12px; }
-
-    .form-group label {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 5px;
       letter-spacing: 0.04em;
     }
 
+    /* ── Add form ── */
+    .add-section {
+      background: none;
+      border-radius: 0;
+      padding: 0;
+    }
+    .add-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      margin-bottom: 24px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--hint);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
     .form-input {
       width: 100%;
       border: none;
-      background: var(--cream);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      border-radius: 0;
+      padding: 12px 0;
       font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--ink);
       outline: none;
       min-height: 44px;
+      transition: border-color 0.2s;
     }
-
-    .form-input:focus { box-shadow: 0 0 0 2px var(--sage-mid); }
-
+    .form-input:focus { border-bottom-color: var(--gold); box-shadow: none; }
     .form-input.amount {
       font-family: 'DM Serif Display', serif;
-      font-size: 20px;
+      font-size: 36px;
+      font-weight: 300;
     }
+    .form-input::placeholder { color: var(--hint); }
 
     .cat-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
-
     .cat-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 12px 10px;
       font-family: 'DM Sans', sans-serif;
       font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
-      background: var(--cream);
+      background: transparent;
       color: var(--muted);
-      min-height: 44px;
-      transition: all 0.15s;
+      min-height: 48px;
+      transition: all 0.2s;
+      text-align: center;
+      letter-spacing: 0.03em;
     }
-
-    .cat-btn.selected.purple { background: var(--purple-light); color: var(--purple); font-weight: 600; }
-    .cat-btn.selected.coral { background: var(--coral-light); color: var(--coral); font-weight: 600; }
-    .cat-btn.selected.sage { background: var(--sage-light); color: var(--sage-dark); font-weight: 600; }
-    .cat-btn.selected.amber { background: var(--amber-light); color: var(--amber); font-weight: 600; }
+    .cat-btn.selected {
+      background: rgba(196,148,74,0.1);
+      color: var(--gold);
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+    .cat-btn.selected.purple,
+    .cat-btn.selected.coral,
+    .cat-btn.selected.sage,
+    .cat-btn.selected.amber {
+      background: rgba(196,148,74,0.1);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
 
     .submit-btn {
       width: 100%;
       border: none;
-      border-radius: 999px;
-      padding: 14px;
-      background: var(--ink);
-      color: #fff;
+      border-radius: 2px;
+      padding: 16px;
+      background: var(--gold);
+      color: var(--bg);
       font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      min-height: 48px;
-      margin-top: 6px;
-      transition: opacity 0.15s;
+      min-height: 52px;
+      margin-top: 12px;
+      transition: opacity 0.2s;
+      letter-spacing: 0.06em;
     }
+    .submit-btn:hover { opacity: 0.9; }
+    .submit-btn:active { opacity: 0.75; }
 
-    .submit-btn:hover { opacity: 0.85; }
-    .submit-btn:active { opacity: 0.7; }
-
-    .hero .progress-fill { background: var(--sage-dark); }
+    .upload-zone {
+      border: 1px dashed var(--line);
+      border-radius: 2px;
+      padding: 28px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--hint);
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-zone:hover { border-color: var(--gold); }
+    .upload-zone img {
+      max-width: 100%;
+      max-height: 120px;
+      border-radius: 2px;
+      object-fit: contain;
+    }
+    .upload-zone input { display: none; }
 
     /* ── Bottom nav ── */
     .bottom-nav {
@@ -748,65 +683,106 @@
       width: 100%;
       max-width: 480px;
       height: 64px;
-      background: var(--cream);
-      border-top: 1px solid var(--hint);
+      background: rgba(28,27,24,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: space-around;
       z-index: 100;
       padding-bottom: env(safe-area-inset-bottom);
     }
-
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
       cursor: pointer;
-      padding: 6px 14px;
-      transition: color 0.15s;
+      padding: 8px 16px;
+      position: relative;
+      transition: color 0.2s;
       color: var(--hint);
       background: none;
       border: none;
       font-family: 'DM Sans', sans-serif;
     }
-
-    .nav-item .nav-icon { font-size: 20px; line-height: 1; }
-    .nav-item .nav-label { font-size: 11px; font-weight: 500; }
-    .nav-item.active { color: var(--sage-dark); }
+    .nav-item .nav-icon { font-size: 18px; line-height: 1; }
+    .nav-item .nav-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 20px;
+      height: 2px;
+      background: var(--gold);
+      transition: transform 0.2s;
+    }
+    .nav-item.active { color: var(--gold); }
+    .nav-item.active::after { transform: translateX(-50%) scaleX(1); }
 
     /* ── Export btn ── */
     .export-btn {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 15px;
-      color: var(--muted);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
       font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--hint);
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
       transition: color 0.15s;
+      text-transform: uppercase;
     }
-    .export-btn:hover { color: var(--sage-dark); }
+    .export-btn:hover { color: var(--gold); }
 
     /* ── Import btn ── */
     .import-btn {
       display: block;
       width: 100%;
       border: none;
-      padding: 6px;
+      padding: 8px;
       background: transparent;
       color: var(--hint);
       font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
       cursor: pointer;
-      margin-top: 12px;
+      margin-top: 24px;
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity 0.3s;
     }
+    .import-btn:hover { opacity: 0.4; }
 
-    .import-btn:hover { opacity: 0.5; }
+    /* ── Pills (home) ── */
+    .pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .pill {
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--hint);
+      white-space: nowrap;
+    }
+    .pill strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -814,23 +790,20 @@
 
     <!-- ═══ Tab 1: 首页 ═══ -->
     <div class="tab-page active" id="tabHome">
-      <header class="header">
+      <div class="home-header">
         <div class="brand">my <em>budget</em></div>
-        <div class="header-right">
-          <div class="date-badge" id="todayBadge"></div>
-          <div class="month-nav">
-            <button type="button" id="prevMonth" aria-label="上个月">‹</button>
-            <span class="month-label" id="monthLabel"></span>
-            <button type="button" id="nextMonth" aria-label="下个月">›</button>
-          </div>
-        </div>
-      </header>
+        <div class="today-date" id="todayBadge"></div>
+      </div>
+      <div class="month-picker">
+        <button type="button" id="prevMonth" aria-label="上月">‹</button>
+        <span class="month-picker-label" id="monthLabel"></span>
+        <button type="button" id="nextMonth" aria-label="下月">›</button>
+      </div>
 
       <div class="pills" id="pills"></div>
 
       <div class="hero">
-        <div class="hero-deco"></div>
-        <div class="hero-label">REMAINING</div>
+        <div class="hero-label">Remaining</div>
         <div class="hero-amount num" id="heroRemaining">¥0</div>
         <div class="hero-sub" id="heroSub"></div>
         <div class="progress-track">
@@ -840,11 +813,11 @@
 
       <div class="stats-row">
         <div class="stat-card">
-          <div class="stat-label">今日消费</div>
+          <div class="stat-label">今日</div>
           <div class="stat-value num" id="statToday">¥0</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">本月累计</div>
+          <div class="stat-label">本月</div>
           <div class="stat-value num" id="statMonth">¥0</div>
         </div>
         <div class="stat-card">
@@ -861,7 +834,6 @@
     <div class="tab-page" id="tabBudget">
       <div class="section-title">预算类目</div>
       <div id="catCards"></div>
-
       <div class="monthly-total">
         <div>
           <div class="label">本月总支出</div>
@@ -878,7 +850,7 @@
     <div class="tab-page" id="tabRecords">
       <div class="section-title-row">
         <span class="section-title">消费记录</span>
-        <button type="button" class="export-btn" id="exportBtn">⬇ 导出 JSON</button>
+        <button type="button" class="export-btn" id="exportBtn">导出</button>
       </div>
       <div id="recordsList"></div>
     </div>
@@ -886,27 +858,22 @@
     <!-- ═══ Tab 4: 记账 ═══ -->
     <div class="tab-page" id="tabAdd">
       <div class="add-section">
-        <div class="add-title">记录消费</div>
-        <div class="upload-zone" id="uploadZone">
-          <input type="file" id="imageInput" accept="image/*">
-          <span id="uploadText">📷 点击上传消费截图</span>
-          <img id="uploadPreview" style="display:none" alt="预览">
-        </div>
+        <div class="add-title">记一笔</div>
         <div class="form-group">
           <label>消费描述</label>
-          <input type="text" class="form-input" id="descInput" placeholder="例如：Tims咖啡">
+          <input type="text" class="form-input" id="descInput" placeholder="今天花了什么？">
         </div>
         <div class="form-group">
-          <label>金额（元）</label>
+          <label>金额</label>
           <input type="number" class="form-input amount" id="amountInput" placeholder="0.00" min="0" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>类目</label>
-          <div class="cat-buttons" id="catButtons"></div>
         </div>
         <div class="form-group">
           <label>日期</label>
           <input type="date" class="form-input" id="dateInput">
+        </div>
+        <div class="form-group">
+          <label>类目</label>
+          <div class="cat-buttons" id="catButtons"></div>
         </div>
         <button type="button" class="submit-btn" id="submitBtn">记录这笔消费</button>
       </div>
@@ -918,19 +885,19 @@
     <!-- ═══ 底部导航 ═══ -->
     <nav class="bottom-nav">
       <button class="nav-item active" data-tab="tabHome">
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon">◉</span>
         <span class="nav-label">首页</span>
       </button>
       <button class="nav-item" data-tab="tabBudget">
-        <span class="nav-icon">📊</span>
+        <span class="nav-icon">◒</span>
         <span class="nav-label">预算</span>
       </button>
       <button class="nav-item" data-tab="tabRecords">
-        <span class="nav-icon">📋</span>
+        <span class="nav-icon">☰</span>
         <span class="nav-label">记录</span>
       </button>
       <button class="nav-item" data-tab="tabAdd">
-        <span class="nav-icon">✏️</span>
+        <span class="nav-icon">+</span>
         <span class="nav-label">记账</span>
       </button>
     </nav>
@@ -946,9 +913,7 @@
       '04': { name: '其他', sub: '礼物、杂项', color: 'amber', budget: 400 }
     };
 
-    const TOTAL_BUDGET = 3000;
-    const WEEKDAYS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-
+    const WEEKDAYS = ['周日','周一','周二','周三','周四','周五','周六'];
     let data = loadData();
     let selectedCat = '03';
     let pendingImage = null;
@@ -1015,9 +980,7 @@
     }
 
     function spentByCat(month, cat) {
-      return recordsInMonth(month)
-        .filter(r => r.cat === cat)
-        .reduce((s, r) => s + r.amount, 0);
+      return recordsInMonth(month).filter(r => r.cat === cat).reduce((s, r) => s + r.amount, 0);
     }
 
     function totalSpentInMonth(month) {
@@ -1034,11 +997,8 @@
       const allMonths = getAllMonths();
       const earliest = allMonths[0];
       if (month <= earliest) return 0;
-
       let rollover = 0;
-      let cur = parseMonth(earliest);
-      const target = parseMonth(month);
-
+      const cur = parseMonth(earliest);
       while (formatMonth(cur) < month) {
         const key = formatMonth(cur);
         const budget01 = CATS['01'].budget + rollover;
@@ -1051,9 +1011,7 @@
     }
 
     function getCatBudget(month, cat) {
-      if (cat === '01') {
-        return CATS['01'].budget + getCat01Rollover(month);
-      }
+      if (cat === '01') return CATS['01'].budget + getCat01Rollover(month);
       return CATS[cat].budget;
     }
 
@@ -1089,38 +1047,32 @@
       const spentPct = totalBudget > 0 ? Math.min(100, (totalSpent / totalBudget) * 100) : 0;
 
       const todayStr = new Date().toISOString().slice(0, 10);
-      const todaySpent = data.records
-        .filter(r => r.date === todayStr)
-        .reduce((s, r) => s + r.amount, 0);
-
+      const todaySpent = data.records.filter(r => r.date === todayStr).reduce((s, r) => s + r.amount, 0);
       const recordDays = new Set(recordsInMonth(month).map(r => r.date)).size;
 
-      // Today badge
       const now = new Date();
-      const monthsEN = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
       document.getElementById('todayBadge').textContent =
-        `${monthsEN[now.getMonth()]} ${now.getDate()} · ${now.getFullYear()}`;
+        `${now.getFullYear()} · ${now.getMonth() + 1}/${now.getDate()}`;
       document.getElementById('monthLabel').textContent = monthLabelCN(month);
 
       // Pills
       document.getElementById('pills').innerHTML = `
         <span class="pill"><strong>${monthLabelCN(month)}</strong></span>
-        <span class="pill">总预算 <strong>${formatMoney(totalBudget)}</strong></span>
-        <span class="pill">已记录 <strong>${recordDays}</strong> 天</span>
+        <span class="pill">预算 <strong>${formatMoney(totalBudget)}</strong></span>
+        <span class="pill">已记 <strong>${recordDays}</strong> 天</span>
       `;
 
       // Hero
       document.getElementById('heroRemaining').textContent = formatMoney(Math.max(0, totalRemain));
       document.getElementById('heroSub').textContent =
-        `已花 ${formatMoney(totalSpent)} · 剩余 ${totalBudget > 0 ? Math.round((totalRemain / totalBudget) * 100) : 0}%`;
+        `已支出 ${formatMoney(totalSpent)} · 剩余 ${totalBudget > 0 ? Math.round((totalRemain / totalBudget) * 100) : 0}%`;
       document.getElementById('heroProgress').style.width = spentPct + '%';
 
       // Stats
       document.getElementById('statToday').textContent = formatMoney(todaySpent);
       document.getElementById('statMonth').textContent = formatMoney(totalSpent);
       document.getElementById('statCat01').textContent = formatMoney(spentByCat(month, '01'));
-      document.getElementById('statRollover').textContent =
-        rollover > 0 ? `结转 ${formatMoney(rollover)}` : '';
+      document.getElementById('statRollover').textContent = rollover > 0 ? `结转 ${formatMoney(rollover)}` : '';
 
       // Category cards
       document.getElementById('catCards').innerHTML = Object.entries(CATS).map(([id, cat]) => {
@@ -1128,29 +1080,19 @@
         const spent = spentByCat(month, id);
         const remain = budget - spent;
         const pct = budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
-        const lowPct = remain < budget * 0.2 && remain >= 0;
-        const rolloverNote = id === '01' && rollover > 0
-          ? `（含结转 ${formatMoney(rollover)}）`
-          : '';
+        const lowRemain = remain < budget * 0.2 && remain >= 0;
+        const over = remain < 0;
+        const rolloverNote = id === '01' && rollover > 0 ? `（含结转 ${formatMoney(rollover)}）` : '';
 
-        let badge = `<span class="remain-badge">余 ${formatMoney(Math.max(0, remain))}</span>`;
-        if (lowPct && remain >= 0) {
-          badge = `<span class="warn-badge">⚠️ 余 ${formatMoney(remain)}</span>`;
-        }
-        if (remain < 0) {
-          badge = `<span class="warn-badge">⚠️ 超支 ${formatMoney(-remain)}</span>`;
-        }
+        const remainLabel = over ? `超支 ${formatMoney(-remain)}` : `剩余 ${formatMoney(remain)}`;
 
-        // 该类目当月记录
         const catRecords = recordsInMonth(month)
           .filter(r => r.cat === id)
           .sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
 
-        let recordsHtml = '';
-        if (catRecords.length === 0) {
-          recordsHtml = '<div class="cat-expand-empty">暂无消费记录</div>';
-        } else {
-          recordsHtml = catRecords.map(r => `
+        let recordsHtml = catRecords.length === 0
+          ? '<div class="cat-expand-empty">暂无消费记录</div>'
+          : catRecords.map(r => `
             <div class="cat-expand-item">
               <div class="cat-expand-desc">
                 <div>${escapeHtml(r.desc)}</div>
@@ -1159,12 +1101,11 @@
               <div class="cat-expand-amount">${formatMoney(r.amount)}</div>
             </div>
           `).join('');
-        }
 
         return `
           <div class="cat-card" data-cat="${id}">
             <div class="cat-header">
-              <div class="cat-badge ${cat.color}">${id}</div>
+              <div class="cat-badge">${id}</div>
               <div class="cat-info">
                 <div class="cat-name">${cat.name}</div>
                 <div class="cat-sub">${cat.sub}</div>
@@ -1175,10 +1116,10 @@
               </div>
             </div>
             <div class="progress-track cat-progress">
-              <div class="progress-fill ${cat.color}" style="width:${pct}%"></div>
+              <div class="progress-fill${over ? ' warn' : ''}" style="width:${pct}%"></div>
             </div>
             <div class="cat-footer">
-              ${badge}
+              <span class="remain-tag${(lowRemain || over) ? ' warn' : ''}">${remainLabel}</span>
               <span class="cat-expand-chevron">›</span>
             </div>
             <div class="cat-expand">
@@ -1189,7 +1130,7 @@
         `;
       }).join('');
 
-      // 展开/收起
+      // Expand/collapse
       document.querySelectorAll('.cat-card').forEach(card => {
         card.addEventListener('click', () => {
           const expand = card.querySelector('.cat-expand');
@@ -1204,11 +1145,13 @@
       const banners = [];
       const remain02 = getCatBudget(month, '02') - spentByCat(month, '02');
       if (remain02 < 200) {
-        banners.push(`<div class="banner warn">⚠️ 取悦自己预算剩余不足 ¥200，当前余 ${formatMoney(Math.max(0, remain02))}，请适度消费</div>`);
+        banners.push(`<div class="banner warn">取悦自己预算剩余不足 · 当前余 ${formatMoney(Math.max(0, remain02))} · 请适度消费</div>`);
       }
       const remain01 = getCatBudget(month, '01') - spentByCat(month, '01');
-      banners.push(`<div class="banner encourage">💜 个人提升还剩 ${formatMoney(Math.max(0, remain01))}，投资自己永远不亏，去上课吧！</div>`);
-      document.getElementById('banners').innerHTML = banners.slice(0, 2).join('');
+      if (remain01 > 0) {
+        banners.push(`<div class="banner">个人提升还剩 ${formatMoney(Math.max(0, remain01))} · 投资自己永远不亏</div>`);
+      }
+      document.getElementById('banners').innerHTML = banners.join('');
 
       // Records
       renderRecords(month);
@@ -1217,7 +1160,6 @@
       document.getElementById('totalSpent').textContent = formatMoney(totalSpent);
       document.getElementById('totalRemain').textContent = formatMoney(Math.max(0, totalRemain));
 
-      // Update stored rollover for current month
       data.cat01Rollover = rollover;
       saveData();
     }
@@ -1225,26 +1167,20 @@
     function renderRecords(month) {
       const records = recordsInMonth(month).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
       const container = document.getElementById('recordsList');
+      const todayStr = new Date().toISOString().slice(0, 10);
 
       if (records.length === 0) {
-        container.innerHTML = '<div class="empty-state">还没有任何消费记录，添加第一笔吧 ↗</div>';
+        container.innerHTML = '<div class="empty-state">还没有消费记录</div>';
         return;
       }
 
-      const todayStr = new Date().toISOString().slice(0, 10);
-
-      // Find peak day
       const dayTotals = {};
-      records.forEach(r => {
-        dayTotals[r.date] = (dayTotals[r.date] || 0) + r.amount;
-      });
-      let peakDate = null;
-      let peakAmount = 0;
+      records.forEach(r => { dayTotals[r.date] = (dayTotals[r.date] || 0) + r.amount; });
+      let peakDate = null, peakAmount = 0;
       Object.entries(dayTotals).forEach(([date, amt]) => {
         if (amt > peakAmount) { peakAmount = amt; peakDate = date; }
       });
 
-      // Group by date
       const groups = {};
       records.forEach(r => {
         if (!groups[r.date]) groups[r.date] = [];
@@ -1258,27 +1194,8 @@
         const dayTotal = dayTotals[date];
         const isPeak = date === peakDate && sortedDates.length > 1;
         const isToday = date === todayStr;
-        const peakTag = isPeak ? '<span class="peak-tag">🔺本月最高</span>' : '';
+        const peakTag = isPeak ? '<span class="peak-tag">峰值</span>' : '';
         const openClass = isToday ? ' open' : '';
-
-        const itemsHtml = items.map(r => {
-          const cat = CATS[r.cat];
-          const thumb = r.imageBase64
-            ? `<img class="record-thumb" src="${r.imageBase64}" alt="">`
-            : '';
-          return `
-            <div class="record-item">
-              <div class="record-dot ${cat.color}"></div>
-              ${thumb}
-              <div class="record-info">
-                <div class="record-desc">${escapeHtml(r.desc)}</div>
-                <div class="record-meta">${formatDateShort(r.date)} · ${cat.name}</div>
-              </div>
-              <div class="record-amount">${formatMoney(r.amount)}</div>
-              <button class="record-delete" data-id="${r.id}" title="删除">🗑️</button>
-            </div>
-          `;
-        }).join('');
 
         return `
           <div class="date-group">
@@ -1289,13 +1206,26 @@
               <span class="chevron${openClass}">›</span>
             </div>
             <div class="records-body${openClass}">
-              ${itemsHtml}
+              ${items.map(r => {
+                const cat = CATS[r.cat];
+                const thumb = r.imageBase64 ? `<img class="record-thumb" src="${r.imageBase64}" alt="">` : '';
+                return `
+                  <div class="record-item">
+                    ${thumb}
+                    <div class="record-info">
+                      <div class="record-desc">${escapeHtml(r.desc)}</div>
+                      <div class="record-meta">${cat.name}</div>
+                    </div>
+                    <div class="record-amount">${formatMoney(r.amount)}</div>
+                    <button class="record-delete" data-id="${r.id}" title="删除">✕</button>
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
       }).join('');
 
-      // Collapse/expand
       container.querySelectorAll('.date-divider').forEach(div => {
         div.addEventListener('click', () => {
           const body = div.nextElementSibling;
@@ -1332,7 +1262,6 @@
           ${id} ${cat.name}
         </button>`
       ).join('');
-
       container.querySelectorAll('.cat-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           selectedCat = btn.dataset.cat;
@@ -1360,54 +1289,35 @@
       const desc = document.getElementById('descInput').value.trim();
       const amount = parseFloat(document.getElementById('amountInput').value);
       const date = document.getElementById('dateInput').value;
-
       if (!desc) { alert('请填写消费描述'); return; }
       if (!amount || amount <= 0) { alert('请填写有效金额'); return; }
       if (!date) { alert('请选择日期'); return; }
-
-      const record = {
-        id: Date.now(),
-        date,
-        desc,
+      data.records.push({
+        id: Date.now(), date, desc,
         amount: Math.round(amount * 100) / 100,
-        cat: selectedCat,
-        emoji: '',
-        imageBase64: pendingImage
-      };
-
-      data.records.push(record);
-      const recordMonth = date.slice(0, 7);
-      data.currentMonth = recordMonth;
-
+        cat: selectedCat, emoji: '', imageBase64: pendingImage
+      });
+      data.currentMonth = date.slice(0, 7);
       saveData();
       render();
       clearForm();
-      // 自动跳转到记录Tab
       switchTab('tabRecords');
     }
 
     // ── Events ──
-
-    // Bottom nav
     document.querySelectorAll('.nav-item').forEach(btn => {
       btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     });
-
-    // Month navigation
     document.getElementById('prevMonth').addEventListener('click', () => {
       data.currentMonth = shiftMonth(data.currentMonth, -1);
-      saveData();
-      render();
+      saveData(); render();
     });
     document.getElementById('nextMonth').addEventListener('click', () => {
       data.currentMonth = shiftMonth(data.currentMonth, 1);
-      saveData();
-      render();
+      saveData(); render();
     });
-
     document.getElementById('submitBtn').addEventListener('click', addRecord);
 
-    // Image upload
     const uploadZone = document.getElementById('uploadZone');
     const imageInput = document.getElementById('imageInput');
     uploadZone.addEventListener('click', () => imageInput.click());
@@ -1439,7 +1349,7 @@
     // Import
     const jsonFileInput = document.getElementById('jsonFileInput');
     document.getElementById('importBtn').addEventListener('click', () => {
-      if (!confirm('确定要导入历史账单数据吗？请选择本地 data.json 文件。')) return;
+      if (!confirm('选择本地 data.json 文件导入历史账单数据')) return;
       jsonFileInput.click();
     });
     jsonFileInput.addEventListener('change', () => {
@@ -1450,23 +1360,20 @@
         try {
           const json = JSON.parse(e.target.result);
           if (!json.records || !Array.isArray(json.records)) {
-            alert('JSON 格式不正确，缺少 records 数组');
-            return;
+            alert('JSON 格式不正确'); return;
           }
           const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
           const existingIds = new Set((existing.records || []).map(r => r.id));
           const newRecords = json.records.filter(r => !existingIds.has(r.id));
           const merged = {
             currentMonth: json.currentMonth || existing.currentMonth,
-            monthlyBudgets: json.monthlyBudgets || existing.monthlyBudgets || { '01': 600, '02': 500, '03': 1500, '04': 400 },
+            monthlyBudgets: json.monthlyBudgets || existing.monthlyBudgets || { '01':600,'02':500,'03':1500,'04':400 },
             cat01Rollover: existing.cat01Rollover || 0,
             records: [...newRecords, ...(existing.records || [])]
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
           location.reload();
-        } catch (err) {
-          alert('JSON 解析失败：' + err.message);
-        }
+        } catch (err) { alert('JSON 解析失败：' + err.message); }
       };
       reader.readAsText(file);
     });
