@@ -353,14 +353,23 @@
       transition: max-height 0.35s ease;
     }
     .cat-expand.open {
-      max-height: 600px;
+      max-height: 40vh;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+
+    /* Thin scrollbar */
+    .cat-expand.open::-webkit-scrollbar { width: 4px; }
+    .cat-expand.open::-webkit-scrollbar-track { background: transparent; }
+    .cat-expand.open::-webkit-scrollbar-thumb {
+      background: var(--hint);
+      border-radius: 2px;
     }
 
     .cat-expand-inner {
       background: rgba(0,0,0,0.03);
       border-radius: 12px;
       padding: 10px 12px;
-      margin-top: 10px;
     }
 
     .cat-expand-item {
@@ -398,6 +407,16 @@
       color: var(--hint);
       text-align: center;
       padding: 12px 0;
+    }
+
+    .cat-expand-fade {
+      position: sticky;
+      bottom: 0;
+      height: 24px;
+      background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.03));
+      pointer-events: none;
+      margin: 0 -12px -10px;
+      border-radius: 0 0 12px 12px;
     }
 
     .cat-progress .progress-fill.purple { background: var(--purple); }
@@ -1156,6 +1175,7 @@
             </div>
             <div class="cat-expand">
               <div class="cat-expand-inner">${recordsHtml}</div>
+              <div class="cat-expand-fade"></div>
             </div>
           </div>
         `;
