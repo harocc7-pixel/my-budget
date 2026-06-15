@@ -283,9 +283,13 @@
       align-items: baseline;
       gap: 0;
       margin-bottom: 3px;
+      position: relative;
     }
 
     .cat-badge {
+      position: absolute;
+      left: 0;
+      top: 0;
       width: 32px;
       height: auto;
       border-radius: 0;
@@ -298,7 +302,8 @@
       font-weight: 400;
       flex-shrink: 0;
       color: var(--hint);
-      padding-right: 12px;
+      padding-right: 0;
+      line-height: 1.3;
     }
 
     .cat-badge.purple,
@@ -306,7 +311,7 @@
     .cat-badge.sage,
     .cat-badge.amber { background: none !important; color: var(--hint); }
 
-    .cat-info { flex: 1; min-width: 0; }
+    .cat-info { flex: 1; min-width: 0; margin-left: 44px; }
 
     .cat-name {
       font-family: 'DM Serif Display', serif;
