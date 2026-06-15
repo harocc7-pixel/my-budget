@@ -33,7 +33,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
       font-size: 14px;
       background: var(--cream);
       color: var(--ink);
@@ -283,14 +283,15 @@
     .cat-info { flex: 1; min-width: 0; }
 
     .cat-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: 600;
       color: var(--ink);
     }
 
     .cat-sub {
-      font-size: 11px;
-      color: var(--muted);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--hint);
       margin-top: 0;
     }
 
@@ -303,14 +304,15 @@
     }
 
     .cat-amounts .spent {
-      font-family: 'DM Serif Display', serif;
       font-size: 15px;
+      font-weight: 600;
       color: var(--ink);
     }
 
     .cat-amounts .budget {
-      font-size: 11px;
-      color: var(--muted);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--hint);
       white-space: nowrap;
     }
 
@@ -322,7 +324,8 @@
     }
 
     .remain-badge {
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 500;
       padding: 2px 8px;
       border-radius: 999px;
       background: var(--sage-light);
@@ -330,7 +333,8 @@
     }
 
     .warn-badge {
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 500;
       padding: 2px 8px;
       border-radius: 999px;
       background: var(--warn-light);
@@ -375,29 +379,33 @@
     .cat-expand-item {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      padding: 8px 0;
+      align-items: center;
+      height: 52px;
+      padding: 0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
     }
     .cat-expand-item:last-child { border-bottom: none; }
 
     .cat-expand-desc {
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 500;
       color: var(--ink);
       flex: 1;
       min-width: 0;
       padding-right: 12px;
+      line-height: 1.3;
     }
 
     .cat-expand-date {
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--hint);
       margin-top: 2px;
     }
 
     .cat-expand-amount {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       color: var(--ink);
       flex-shrink: 0;
     }
