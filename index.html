@@ -349,11 +349,31 @@
 
     .cat-footer {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 6px;
+      gap: 12px;
+      margin-top: 8px;
       padding-left: 44px;
     }
+
+    /* Dot progress */
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .pdot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(245,240,232,0.06);
+      transition: background 0.5s ease, box-shadow 0.5s ease;
+    }
+    .pdot.on {
+      background: var(--gold);
+      box-shadow: 0 0 4px rgba(196,148,74,0.5);
+    }
+    .pdot.on.high { background: var(--warn); box-shadow: 0 0 4px rgba(216,85,58,0.5); }
 
     .remain-badge {
       font-size: 12px;
@@ -363,6 +383,7 @@
       border-radius: 0;
       background: none;
       color: var(--muted);
+      white-space: nowrap;
     }
     .remain-badge.low { color: var(--gold); }
     .remain-badge.over { color: var(--warn); font-weight: 600; }
@@ -375,14 +396,14 @@
       border-radius: 0;
       background: none;
       color: var(--warn);
+      white-space: nowrap;
     }
     .warn-badge.low { color: var(--gold); }
     .warn-badge.over { color: var(--warn); font-weight: 600; }
 
     /* Cat card expand */
     .cat-card { cursor: pointer; }
-    .cat-progress { margin: 0; }
-    .cat-progress .progress-track { margin: 0; }
+    .cat-progress { display: none; }
     .cat-expand-chevron {
       font-size: 14px;
       color: var(--hint);
@@ -1286,6 +1307,17 @@
             </div>
           `).join('');
 
+        // 点阵进度条：20个点
+        const dotCount = 20;
+        const filledDots = Math.round(pct / 100 * dotCount);
+        let dotsHtml = '<div class="progress-dots">';
+        for (let i = 0; i < dotCount; i++) {
+          const on = i < filledDots;
+          const cls = on ? ('on' + (progressClass === 'high' ? ' high' : '')) : '';
+          dotsHtml += `<span class="pdot ${cls}"></span>`;
+        }
+        dotsHtml += '</div>';
+
         return `
           <div class="cat-card" data-cat="${id}">
             <div class="cat-header">
@@ -1300,9 +1332,7 @@
             </div>
             <div class="cat-sub">${cat.sub}</div>
             <div class="cat-footer">
-              <div class="progress-track cat-progress" style="flex:1;margin-right:16px">
-                <div class="progress-fill ${progressClass}" style="width:${pct}%"></div>
-              </div>
+              ${dotsHtml}
               <span class="${badgeClass}">${remainLabel}</span>
               <span class="cat-expand-chevron">›</span>
             </div>
