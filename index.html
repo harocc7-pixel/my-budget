@@ -188,22 +188,52 @@
       margin-bottom: 20px;
     }
 
-    .progress-track {
-      height: 1px;
-      background: var(--line);
-      border-radius: 0;
-      overflow: visible;
+    /* Hero progress area */
+    .hero-progress-area {
+      position: relative;
+      padding-top: 28px;
     }
 
-    .progress-fill {
-      height: 2px;
-      border-radius: 0;
+    .hero-mascot {
+      position: absolute;
+      top: 0;
+      font-size: 18px;
+      transform: translateX(-50%);
+      transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: mascotRun 0.4s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    @keyframes mascotRun {
+      0%   { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-50%) translateY(-4px); }
+    }
+
+    .hero-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hero-dots .pdot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(245,240,232,0.08);
+      transition: background 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    .hero-dots .pdot.on {
       background: var(--gold);
-      margin-top: -0.5px;
-      transition: width 0.6s ease;
+      box-shadow: 0 0 5px rgba(196,148,74,0.6);
     }
 
-    .hero .progress-fill { background: var(--gold); }
+    .hero-dots .pdot.on.high { background: var(--warn); box-shadow: 0 0 5px rgba(216,85,58,0.5); }
+
+    /* Hide old hero progress */
+    .hero .progress-track { display: none; }
+    .hero .progress-fill { display: none; }
 
     /* Stats row */
     .stats-row {
@@ -978,8 +1008,9 @@
         <div class="hero-label">REMAINING</div>
         <div class="hero-amount num" id="heroRemaining">¥0</div>
         <div class="hero-sub" id="heroSub"></div>
-        <div class="progress-track">
-          <div class="progress-fill" id="heroProgress" style="width:0%"></div>
+        <div class="hero-progress-area">
+          <div class="hero-mascot" id="heroMascot" style="left:0%">🐈</div>
+          <div class="hero-dots" id="heroDots"></div>
         </div>
       </div>
 
@@ -1258,7 +1289,18 @@
       document.getElementById('heroRemaining').textContent = formatMoney(Math.max(0, totalRemain));
       document.getElementById('heroSub').textContent =
         `已花 ${formatMoney(totalSpent)} · 剩余 ${totalBudget > 0 ? Math.round((totalRemain / totalBudget) * 100) : 0}%`;
-      document.getElementById('heroProgress').style.width = spentPct + '%';
+      // Hero dot progress + mascot
+      const heroDotCount = 16;
+      const heroFilled = Math.round(spentPct / 100 * heroDotCount);
+      let heroDotsHtml = '';
+      for (let i = 0; i < heroDotCount; i++) {
+        const on = i < heroFilled;
+        heroDotsHtml += `<span class="pdot${on ? ' on' + (spentPct > 80 ? ' high' : '') : ''}"></span>`;
+      }
+      document.getElementById('heroDots').innerHTML = heroDotsHtml;
+      const mascot = document.getElementById('heroMascot');
+      mascot.style.left = Math.min(spentPct, 94) + '%';
+      mascot.textContent = spentPct > 80 ? '🐈' : (spentPct > 50 ? '🐈' : '🐈');
 
       // Stats
       document.getElementById('statToday').textContent = formatMoney(todaySpent);
