@@ -1300,7 +1300,11 @@
       }
       document.getElementById('heroDots').innerHTML = heroDotsHtml;
       const mascot = document.getElementById('heroMascot');
-      mascot.style.left = Math.max(3, Math.min(spentPct, 94)) + '%';
+      // 小猫对齐最后一个点亮点的位置
+      const mascotPct = heroFilled > 0
+        ? (heroFilled - 1) / (heroDotCount - 1) * 100
+        : 3;
+      mascot.style.left = Math.max(3, Math.min(mascotPct, 94)) + '%';
 
       // Stats
       document.getElementById('statToday').textContent = formatMoney(todaySpent);
