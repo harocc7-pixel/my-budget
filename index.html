@@ -565,6 +565,52 @@
 
     /* Records */
     .records-section { margin-bottom: 16px; }
+
+    /* Section labels */
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--hint);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* Summary bar */
+    .records-summary {
+      display: flex;
+      gap: 16px;
+      padding: 10px 0 14px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+    .records-summary strong {
+      color: var(--ink);
+      font-weight: 600;
+      font-family: 'DM Serif Display', serif;
+    }
+
+    /* Toggle all */
+    .toggle-all-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--hint);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.15s;
+      margin-left: 8px;
+      flex-shrink: 0;
+    }
+    .toggle-all-btn:hover { color: var(--gold); }
+
     .date-group { margin-bottom: 20px; }
 
     .date-divider {
@@ -574,11 +620,18 @@
       margin-bottom: 10px;
       cursor: pointer;
       user-select: none;
-      padding: 4px 0;
+      padding: 8px 0;
+      transition: background 0.15s;
+      border-radius: 2px;
+      margin: 0 -4px 0 -4px;
+      padding-left: 4px;
+      padding-right: 4px;
     }
+    .date-divider:hover { background: rgba(245,240,232,0.02); }
 
     .date-divider .date-text {
       font-size: 12px;
+      font-weight: 500;
       color: var(--muted);
       white-space: nowrap;
       width: 128px;
@@ -588,32 +641,36 @@
     .date-divider .line {
       flex: 1;
       height: 1px;
-      background: var(--hint);
-      opacity: 0.4;
+      background: var(--line);
     }
 
     .date-divider .day-sum {
       font-family: 'DM Serif Display', serif;
-      font-size: 13px;
+      font-size: 14px;
       color: var(--ink);
       white-space: nowrap;
       flex-shrink: 0;
+      min-width: 64px;
+      text-align: right;
     }
 
     .date-divider .chevron {
-      font-size: 11px;
-      color: var(--hint);
+      font-size: 16px;
+      color: var(--muted);
       transition: transform 0.2s;
       flex-shrink: 0;
-      width: 14px;
+      width: 16px;
       text-align: center;
+      line-height: 1;
     }
-    .date-divider .chevron.open { transform: rotate(90deg); }
+    .date-divider .chevron.open { transform: rotate(90deg); color: var(--gold); }
 
     .peak-tag {
       font-size: 10px;
-      color: var(--coral);
-      margin-left: 4px;
+      color: var(--gold);
+      margin-left: 6px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
     }
 
     .records-body { display: none; }
@@ -622,23 +679,23 @@
     .record-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 0 10px 10px;
+      gap: 10px;
+      padding: 8px 0 8px 8px;
       border-bottom: 1px solid var(--line);
-      border-left: 2px solid var(--gold);
+      border-left: 1px solid rgba(245,240,232,0.1);
       margin-bottom: 1px;
+      transition: border-left-color 0.2s;
     }
-
+    .record-item:hover { border-left-color: var(--gold); }
     .record-item:last-of-type { border-bottom: none; }
 
     .record-dot { display: none; }
-
     .record-dot.purple,
     .record-dot.coral,
     .record-dot.sage,
     .record-dot.amber { display: none; }
 
-    .record-info { flex: 1; min-width: 0; }
+    .record-info { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
 
     .record-desc {
       font-size: 14px;
@@ -648,59 +705,51 @@
       text-overflow: ellipsis;
     }
 
-    .record-meta {
+    .record-cat-tag {
       font-size: 11px;
       color: var(--hint);
-      margin-top: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .record-amount {
       font-family: 'DM Serif Display', serif;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--ink);
       flex-shrink: 0;
+      min-width: 72px;
+      text-align: right;
     }
 
     .record-delete {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 14px;
-      opacity: 0.4;
+      font-size: 13px;
+      opacity: 0.25;
       padding: 6px;
-      min-width: 32px;
-      min-height: 32px;
-      border-radius: 8px;
+      min-width: 28px;
+      min-height: 28px;
+      border-radius: 2px;
       transition: opacity 0.15s;
+      color: var(--hint);
     }
-
-    .record-delete:hover { opacity: 1; }
+    .record-delete:hover { opacity: 1; color: var(--warn); }
 
     .record-thumb {
       width: 36px;
       height: 36px;
-      border-radius: 8px;
+      border-radius: 2px;
       object-fit: cover;
       flex-shrink: 0;
     }
 
-    .day-total {
-      text-align: right;
-      font-size: 12px;
-      color: var(--muted);
-      padding: 6px 0 2px;
-    }
-
-    .day-total strong {
-      font-family: 'DM Serif Display', serif;
-      color: var(--ink);
-    }
-
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
+      padding: 48px 20px;
       color: var(--hint);
-      font-size: 14px;
+      font-size: 13px;
+      letter-spacing: 0.04em;
     }
 
     /* Monthly total */
@@ -1084,10 +1133,16 @@
     <div class="tab-page" id="tabRecords">
       <div class="section-title-row">
         <span class="section-title">消费记录</span>
-        <button type="button" class="export-btn" id="exportBtn">⬇ 导出 JSON</button>
+        <button type="button" class="export-btn" id="exportBtn">导出</button>
       </div>
       <div class="chart-container" id="chartContainer" style="display:none">
+        <div class="section-label">每日趋势</div>
         <svg id="sparkChart" width="100%" height="140"></svg>
+      </div>
+      <div class="records-summary" id="recordsSummary" style="display:none"></div>
+      <div class="section-title-row" id="recordsHeader" style="display:none">
+        <span class="section-label" style="margin-bottom:0">详细记录</span>
+        <button type="button" class="toggle-all-btn" id="toggleAllBtn">展开全部</button>
       </div>
       <div id="recordsList"></div>
     </div>
@@ -1516,13 +1571,30 @@
     function renderRecords(month) {
       const records = recordsInMonth(month).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
       const container = document.getElementById('recordsList');
+      const summaryBar = document.getElementById('recordsSummary');
+      const headerRow = document.getElementById('recordsHeader');
+      const toggleBtn = document.getElementById('toggleAllBtn');
 
       if (records.length === 0) {
-        container.innerHTML = '<div class="empty-state">还没有任何消费记录，添加第一笔吧 ↗</div>';
+        container.innerHTML = '<div class="empty-state">还没有消费记录</div>';
+        summaryBar.style.display = 'none';
+        headerRow.style.display = 'none';
         return;
       }
 
+      summaryBar.style.display = 'flex';
+      headerRow.style.display = 'flex';
+
       const todayStr = new Date().toISOString().slice(0, 10);
+      const totalAmount = records.reduce((s, r) => s + r.amount, 0);
+      const dayCount = new Set(records.map(r => r.date)).size;
+
+      // Monthly summary
+      summaryBar.innerHTML = `
+        <span>${dayCount} 天</span>
+        <span>共 <strong>${records.length}</strong> 笔</span>
+        <span>合计 <strong>${formatMoney(totalAmount)}</strong></span>
+      `;
 
       // Find peak day
       const dayTotals = {};
@@ -1544,12 +1616,15 @@
 
       const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
 
+      let allExpanded = true;
+
       container.innerHTML = sortedDates.map(date => {
         const items = groups[date];
         const dayTotal = dayTotals[date];
         const isPeak = date === peakDate && sortedDates.length > 1;
         const isToday = date === todayStr;
-        const peakTag = isPeak ? '<span class="peak-tag">🔺本月最高</span>' : '';
+        if (!isToday) allExpanded = false;
+        const peakTag = isPeak ? '<span class="peak-tag">峰值</span>' : '';
         const openClass = isToday ? ' open' : '';
 
         const itemsHtml = items.map(r => {
@@ -1559,14 +1634,13 @@
             : '';
           return `
             <div class="record-item">
-              <div class="record-dot ${cat.color}"></div>
               ${thumb}
               <div class="record-info">
                 <div class="record-desc">${escapeHtml(r.desc)}</div>
-                <div class="record-meta">${formatDateShort(r.date)} · ${cat.name}</div>
+                <span class="record-cat-tag">${cat.name}</span>
               </div>
               <div class="record-amount">${formatMoney(r.amount)}</div>
-              <button class="record-delete" data-id="${r.id}" title="删除">🗑️</button>
+              <button class="record-delete" data-id="${r.id}" title="删除">✕</button>
             </div>
           `;
         }).join('');
@@ -1586,22 +1660,48 @@
         `;
       }).join('');
 
-      // Collapse/expand
+      // Update toggle button state
+      toggleBtn.textContent = allExpanded ? '收起全部' : '展开全部';
+      toggleBtn.dataset.expanded = allExpanded ? '1' : '0';
+
+      // Collapse/expand single
       container.querySelectorAll('.date-divider').forEach(div => {
-        div.addEventListener('click', () => {
+        div.addEventListener('click', (e) => {
+          e.stopPropagation();
           const body = div.nextElementSibling;
           const chevron = div.querySelector('.chevron');
           const isOpen = body.classList.contains('open');
           body.classList.toggle('open', !isOpen);
           chevron.classList.toggle('open', !isOpen);
+          updateToggleState();
         });
       });
 
+      // Toggle all
+      toggleBtn.onclick = () => {
+        const expand = toggleBtn.dataset.expanded !== '1';
+        toggleBtn.textContent = expand ? '收起全部' : '展开全部';
+        toggleBtn.dataset.expanded = expand ? '1' : '0';
+        container.querySelectorAll('.records-body').forEach(body => {
+          body.classList.toggle('open', expand);
+        });
+        container.querySelectorAll('.chevron').forEach(ch => {
+          ch.classList.toggle('open', expand);
+        });
+      };
+
+      function updateToggleState() {
+        const allOpen = container.querySelectorAll('.records-body.open').length === sortedDates.length;
+        toggleBtn.textContent = allOpen ? '收起全部' : '展开全部';
+        toggleBtn.dataset.expanded = allOpen ? '1' : '0';
+      }
+
+      // Delete
       container.querySelectorAll('.record-delete').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.dataset.id;
-          if (confirm('确定删除这条消费记录吗？')) {
+          if (confirm('确定删除这条记录吗？')) {
             data.records = data.records.filter(r => String(r.id) !== String(id));
             saveData();
             render();
@@ -1717,7 +1817,7 @@
     });
 
     // Export
-    document.getElementById('exportBtn').addEventListener('click', () => {
+    document.getElementById('exportBtn').addEventListener('click', function() {
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1725,6 +1825,12 @@
       a.download = `budget_backup_${data.currentMonth}.json`;
       a.click();
       URL.revokeObjectURL(url);
+      this.textContent = '已导出';
+      this.style.color = 'var(--gold)';
+      setTimeout(() => {
+        this.textContent = '导出';
+        this.style.color = '';
+      }, 1500);
     });
 
     // Import
