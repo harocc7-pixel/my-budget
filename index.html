@@ -1028,7 +1028,25 @@
       r: 3;
       transition: r 0.2s;
     }
-    .chart-container .data-dot:hover { r: 5; }
+    .chart-container .data-dot:hover { r: 5; cursor: pointer; }
+    .chart-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 5;
+    }
+    .chart-tooltip.show { opacity: 1; }
+    .chart-tooltip .tt-date { color: var(--muted); margin-right: 8px; }
+    .chart-tooltip .tt-amount { font-family: 'DM Serif Display', serif; color: var(--gold); }
     .chart-container .axis-label {
       font-size: 9px;
       fill: var(--hint);
@@ -1137,7 +1155,10 @@
       </div>
       <div class="chart-container" id="chartContainer" style="display:none">
         <div class="section-label">每日趋势</div>
-        <svg id="sparkChart" width="100%" height="140"></svg>
+        <div style="position:relative">
+          <svg id="sparkChart" width="100%" height="140"></svg>
+          <div class="chart-tooltip" id="chartTooltip"></div>
+        </div>
       </div>
       <div class="records-summary" id="recordsSummary" style="display:none"></div>
       <div class="section-title-row" id="recordsHeader" style="display:none">
@@ -1566,6 +1587,30 @@
       svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
       svg.innerHTML = gridHtml + lineHtml + dotsHtml;
       container.style.display = 'block';
+
+      // Tooltip interaction
+      const tooltip = document.getElementById('chartTooltip');
+      const svgRect = svg.getBoundingClientRect();
+      svg.querySelectorAll('.data-dot').forEach(dot => {
+        dot.addEventListener('mouseenter', (e) => {
+          const title = dot.querySelector('title');
+          if (!title) return;
+          const text = title.textContent; // e.g. "13日 ¥21.10"
+          const [d, a] = text.split(' ');
+          tooltip.innerHTML = `<span class="tt-date">${d}</span><span class="tt-amount">${a}</span>`;
+          const rect = svg.getBoundingClientRect();
+          const cx = parseFloat(dot.getAttribute('cx'));
+          const cy = parseFloat(dot.getAttribute('cy'));
+          const scaleX = rect.width / 440;
+          const scaleY = rect.height / 140;
+          tooltip.style.left = (cx * scaleX + 12) + 'px';
+          tooltip.style.top = (cy * scaleY - 36) + 'px';
+          tooltip.classList.add('show');
+        });
+        dot.addEventListener('mouseleave', () => {
+          tooltip.classList.remove('show');
+        });
+      });
     }
 
     function renderRecords(month) {
@@ -1640,7 +1685,7 @@
                 <span class="record-cat-tag">${cat.name}</span>
               </div>
               <div class="record-amount">${formatMoney(r.amount)}</div>
-              <button class="record-delete" data-id="${r.id}" title="删除">✕</button>
+              <button class="record-delete" data-id="${r.id}" title="删除">🗑️</button>
             </div>
           `;
         }).join('');
