@@ -1291,7 +1291,7 @@
       document.getElementById('heroSub').textContent =
         `已花 ${formatMoney(totalSpent)} · 剩余 ${totalBudget > 0 ? Math.round((totalRemain / totalBudget) * 100) : 0}%`;
       // Hero dot progress + mascot
-      const heroDotCount = 16;
+      const heroDotCount = 32;
       const heroFilled = Math.round(spentPct / 100 * heroDotCount);
       let heroDotsHtml = '';
       for (let i = 0; i < heroDotCount; i++) {
