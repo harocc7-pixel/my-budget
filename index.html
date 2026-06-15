@@ -266,34 +266,39 @@
     .cat-card {
       background: none;
       border-radius: 0;
-      padding: 18px 0;
+      padding: 16px 8px;
       margin-bottom: 0;
       border-bottom: 1px solid var(--line);
+      border-left: 2px solid transparent;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, border-left-color 0.2s;
     }
-    .cat-card:hover { background: rgba(245,240,232,0.02); }
+    .cat-card:hover {
+      background: rgba(245,240,232,0.02);
+      border-left-color: var(--gold);
+    }
 
     .cat-header {
       display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 7px;
+      align-items: baseline;
+      gap: 0;
+      margin-bottom: 3px;
     }
 
     .cat-badge {
-      width: auto;
+      width: 32px;
       height: auto;
       border-radius: 0;
       background: none !important;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       font-family: 'DM Serif Display', serif;
-      font-size: 22px;
+      font-size: 15px;
       font-weight: 400;
       flex-shrink: 0;
       color: var(--hint);
+      padding-right: 12px;
     }
 
     .cat-badge.purple,
@@ -309,13 +314,15 @@
       font-weight: 400;
       color: var(--ink);
       letter-spacing: -0.01em;
+      line-height: 1.3;
     }
 
     .cat-sub {
       font-size: 12px;
       font-weight: 400;
       color: var(--hint);
-      margin-top: 0;
+      margin-top: 1px;
+      margin-left: 44px;
     }
 
     .cat-amounts {
@@ -324,18 +331,17 @@
       gap: 2px;
       flex-shrink: 0;
       text-align: right;
-      padding-top: 2px;
     }
 
     .cat-amounts .spent {
       font-family: 'DM Serif Display', serif;
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 400;
       color: var(--ink);
     }
 
     .cat-amounts .budget {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 400;
       color: var(--hint);
       white-space: nowrap;
@@ -346,30 +352,37 @@
       justify-content: space-between;
       align-items: center;
       margin-top: 6px;
+      padding-left: 44px;
     }
 
     .remain-badge {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       padding: 0;
       border-radius: 0;
       background: none;
       color: var(--muted);
     }
+    .remain-badge.low { color: var(--gold); }
+    .remain-badge.over { color: var(--warn); font-weight: 600; }
 
     .warn-badge {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       padding: 0;
       border-radius: 0;
       background: none;
       color: var(--warn);
     }
+    .warn-badge.low { color: var(--gold); }
+    .warn-badge.over { color: var(--warn); font-weight: 600; }
 
     /* Cat card expand */
     .cat-card { cursor: pointer; }
+    .cat-progress { margin: 0; }
+    .cat-progress .progress-track { margin: 0; }
     .cat-expand-chevron {
       font-size: 14px;
       color: var(--hint);
@@ -455,10 +468,11 @@
       border-radius: 0;
     }
 
-    .cat-progress .progress-fill.purple,
-    .cat-progress .progress-fill.coral,
-    .cat-progress .progress-fill.sage,
-    .cat-progress .progress-fill.amber { background: var(--gold); }
+    .cat-progress .progress-fill { background: var(--gold); }
+    .cat-progress .progress-fill.low   { background: var(--gold); }
+    .cat-progress .progress-fill.mid   { background: var(--gold); opacity: 0.8; }
+    .cat-progress .progress-fill.high  { background: var(--warn); }
+    .cat-progress .progress-fill.zero  { background: var(--gold); opacity: 0.15; }
 
     /* Thin scrollbar for dark */
     .cat-expand.open::-webkit-scrollbar { width: 3px; }
@@ -633,15 +647,17 @@
 
     /* Monthly total */
     .monthly-total {
-      background: var(--surface);
-      border-radius: 2px;
-      padding: 24px 20px;
+      background: none;
+      border-radius: 0;
+      padding: 20px 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 0;
-      margin-top: 4px;
-      border-left: 2px solid var(--gold);
+      margin-top: 0;
+      border-top: 2px solid var(--line);
+      border-bottom: 2px solid var(--line);
+      border-left: none;
     }
 
     .monthly-total .label {
@@ -1233,29 +1249,34 @@
         const spent = spentByCat(month, id);
         const remain = budget - spent;
         const pct = budget > 0 ? Math.min(100, (spent / budget) * 100) : 0;
-        const lowPct = remain < budget * 0.2 && remain >= 0;
         const rolloverNote = id === '01' && rollover > 0
           ? `（含结转 ${formatMoney(rollover)}）`
           : '';
 
-        let badge = `<span class="remain-badge">余 ${formatMoney(Math.max(0, remain))}</span>`;
-        if (lowPct && remain >= 0) {
-          badge = `<span class="warn-badge">⚠️ 余 ${formatMoney(remain)}</span>`;
-        }
-        if (remain < 0) {
-          badge = `<span class="warn-badge">⚠️ 超支 ${formatMoney(-remain)}</span>`;
-        }
+        // 进度条分档
+        let progressClass = 'zero';
+        if (pct > 0 && pct <= 50)  progressClass = 'low';
+        else if (pct > 50 && pct <= 80) progressClass = 'mid';
+        else if (pct > 80) progressClass = 'high';
+
+        // 余额分档
+        const remainRatio = budget > 0 ? remain / budget : 1;
+        let badgeClass = 'remain-badge';
+        if (remain < 0) badgeClass += ' over';
+        else if (remainRatio < 0.2) badgeClass += ' low';
+
+        const remainLabel = remain < 0
+          ? `超支 ${formatMoney(-remain)}`
+          : `余 ${formatMoney(remain)}`;
 
         // 该类目当月记录
         const catRecords = recordsInMonth(month)
           .filter(r => r.cat === id)
           .sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
 
-        let recordsHtml = '';
-        if (catRecords.length === 0) {
-          recordsHtml = '<div class="cat-expand-empty">暂无消费记录</div>';
-        } else {
-          recordsHtml = catRecords.map(r => `
+        let recordsHtml = catRecords.length === 0
+          ? '<div class="cat-expand-empty">暂无消费记录</div>'
+          : catRecords.map(r => `
             <div class="cat-expand-item">
               <div class="cat-expand-desc">
                 <div>${escapeHtml(r.desc)}</div>
@@ -1264,7 +1285,6 @@
               <div class="cat-expand-amount">${formatMoney(r.amount)}</div>
             </div>
           `).join('');
-        }
 
         return `
           <div class="cat-card" data-cat="${id}">
@@ -1272,18 +1292,18 @@
               <div class="cat-badge ${cat.color}">${id}</div>
               <div class="cat-info">
                 <div class="cat-name">${cat.name}</div>
-                <div class="cat-sub">${cat.sub}</div>
               </div>
               <div class="cat-amounts">
                 <span class="spent">${formatMoney(spent)}</span>
                 <span class="budget">/ ${formatMoney(budget)}${rolloverNote}</span>
               </div>
             </div>
-            <div class="progress-track cat-progress">
-              <div class="progress-fill ${cat.color}" style="width:${pct}%"></div>
-            </div>
+            <div class="cat-sub">${cat.sub}</div>
             <div class="cat-footer">
-              ${badge}
+              <div class="progress-track cat-progress" style="flex:1;margin-right:16px">
+                <div class="progress-fill ${progressClass}" style="width:${pct}%"></div>
+              </div>
+              <span class="${badgeClass}">${remainLabel}</span>
               <span class="cat-expand-chevron">›</span>
             </div>
             <div class="cat-expand">
