@@ -958,6 +958,35 @@
     }
     .import-btn:hover { opacity: 0.4; }
 
+    /* Chart */
+    .chart-container {
+      margin-bottom: 24px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .chart-container .grid-line { stroke: var(--line); stroke-width: 0.5; }
+    .chart-container .data-line {
+      stroke: var(--gold);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .chart-container .data-dot {
+      fill: var(--bg);
+      stroke: var(--gold);
+      stroke-width: 1.5;
+      r: 3;
+      transition: r 0.2s;
+    }
+    .chart-container .data-dot:hover { r: 5; }
+    .chart-container .axis-label {
+      font-size: 9px;
+      fill: var(--hint);
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.04em;
+    }
+
     /* Records misc */
     .date-divider .line { background: var(--line); opacity: 1; }
     .record-delete { color: var(--hint); }
@@ -1056,6 +1085,9 @@
       <div class="section-title-row">
         <span class="section-title">消费记录</span>
         <button type="button" class="export-btn" id="exportBtn">⬇ 导出 JSON</button>
+      </div>
+      <div class="chart-container" id="chartContainer" style="display:none">
+        <svg id="sparkChart" width="100%" height="140"></svg>
       </div>
       <div id="recordsList"></div>
     </div>
@@ -1253,7 +1285,7 @@
         n.classList.toggle('active', n.dataset.tab === tabId);
       });
       if (tabId === 'tabAdd') { initCatButtons(); }
-      if (tabId === 'tabRecords') { renderRecords(data.currentMonth); }
+      if (tabId === 'tabRecords') { renderChart(data.currentMonth); renderRecords(data.currentMonth); }
     }
 
     // ── Main render ──
@@ -1414,7 +1446,8 @@
       banners.push(`<div class="banner encourage">💜 个人提升还剩 ${formatMoney(Math.max(0, remain01))}，投资自己永远不亏，去上课吧！</div>`);
       document.getElementById('banners').innerHTML = banners.slice(0, 2).join('');
 
-      // Records
+      // Chart + Records
+      renderChart(month);
       renderRecords(month);
 
       // Monthly total
@@ -1424,6 +1457,60 @@
       // Update stored rollover for current month
       data.cat01Rollover = rollover;
       saveData();
+    }
+
+    function renderChart(month) {
+      const container = document.getElementById('chartContainer');
+      const svg = document.getElementById('sparkChart');
+      const records = recordsInMonth(month);
+      if (records.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      // 按天汇总
+      const dayMap = {};
+      records.forEach(r => {
+        const day = parseInt(r.date.slice(8, 10), 10);
+        dayMap[day] = (dayMap[day] || 0) + r.amount;
+      });
+
+      const days = Object.keys(dayMap).map(Number).sort((a, b) => a - b);
+      const maxSpent = Math.max(...Object.values(dayMap), 1);
+
+      const W = Math.max(svg.clientWidth, 440);
+      const H = 140;
+      const pad = { top: 16, right: 16, bottom: 20, left: 32 };
+      const plotW = W - pad.left - pad.right;
+      const plotH = H - pad.top - pad.bottom;
+
+      const xScale = (day) => pad.left + ((day - days[0]) / Math.max(days[days.length - 1] - days[0], 1)) * plotW;
+      const yScale = (val) => pad.top + plotH - (val / maxSpent) * plotH;
+
+      // Grid lines
+      let gridHtml = '';
+      for (let i = 0; i <= 3; i++) {
+        const y = pad.top + (plotH / 3) * i;
+        const val = maxSpent - (maxSpent / 3) * i;
+        gridHtml += `<line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" class="grid-line"/>`;
+        gridHtml += `<text x="${pad.left - 6}" y="${y + 3}" text-anchor="end" class="axis-label">${Math.round(val)}</text>`;
+      }
+
+      // Data line
+      const points = days.map(d => `${xScale(d)},${yScale(dayMap[d])}`).join(' ');
+      const lineHtml = points ? `<polyline points="${points}" class="data-line"/>` : '';
+
+      // Data dots
+      let dotsHtml = days.map(d => {
+        const cx = xScale(d);
+        const cy = yScale(dayMap[d]);
+        const label = `${d}日 ¥${dayMap[d].toFixed(0)}`;
+        return `<circle cx="${cx}" cy="${cy}" class="data-dot"><title>${label}</title></circle>`;
+      }).join('');
+
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.innerHTML = gridHtml + lineHtml + dotsHtml;
+      container.style.display = 'block';
     }
 
     function renderRecords(month) {
