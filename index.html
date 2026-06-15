@@ -1580,7 +1580,7 @@
       let dotsHtml = days.map(d => {
         const cx = xScale(d);
         const cy = yScale(dayMap[d]);
-        const label = `${d}日 ¥${dayMap[d].toFixed(0)}`;
+        const label = `${d}日 ¥${dayMap[d].toFixed(2)}`;
         return `<circle cx="${cx}" cy="${cy}" class="data-dot"><title>${label}</title></circle>`;
       }).join('');
 
