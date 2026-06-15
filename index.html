@@ -9,10 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #1C1B18;
+      --bg:       #0A0C14;
       --surface:  rgba(245,240,232,0.04);
       --surface2: rgba(245,240,232,0.07);
-      --cream:    #1C1B18;
+      --cream:    #0A0C14;
       --warm:     rgba(245,240,232,0.04);
       --ink:      #F5F0E8;
       --muted:    #9C9890;
@@ -48,12 +48,85 @@
       line-height: 1.5;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Starfield ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        /* nebula - warm gold */
+        radial-gradient(ellipse 800px 400px at 20% 30%, rgba(196,148,74,0.04) 0%, transparent 70%),
+        /* nebula - cool blue */
+        radial-gradient(ellipse 600px 500px at 75% 60%, rgba(100,140,200,0.03) 0%, transparent 70%),
+        /* nebula - purple hint */
+        radial-gradient(ellipse 500px 300px at 50% 80%, rgba(120,100,180,0.03) 0%, transparent 70%);
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      animation: twinkle 4s ease-in-out infinite alternate;
+      /* micro stars - dense field */
+      box-shadow:
+        /* bright stars */
+        120px 80px   0 0.5px rgba(255,255,255,0.7),
+        340px 160px  0 0.5px rgba(255,255,255,0.6),
+        80px  300px  0 0.5px rgba(255,255,255,0.5),
+        400px 450px  0 0.5px rgba(255,255,255,0.7),
+        200px 520px  0 0.5px rgba(255,255,255,0.4),
+        500px 250px  0 0.5px rgba(255,255,255,0.5),
+        50px  600px  0 0.5px rgba(255,255,255,0.6),
+        380px 700px  0 0.5px rgba(255,255,255,0.4),
+        /* medium stars tier 1 */
+        180px 40px   0 1px rgba(255,255,255,0.12),   350px 90px   0 1px rgba(255,255,255,0.09),
+        60px  150px  0 1px rgba(255,255,255,0.11),   420px 200px  0 1px rgba(255,255,255,0.1),
+        240px 240px  0 1px rgba(255,255,255,0.08),   90px  380px  0 1px rgba(255,255,255,0.13),
+        450px 350px  0 1px rgba(255,255,255,0.07),   160px 440px  0 1px rgba(255,255,255,0.11),
+        320px 500px  0 1px rgba(255,255,255,0.09),   40px  540px  0 1px rgba(255,255,255,0.12),
+        480px 580px  0 1px rgba(255,255,255,0.08),   280px 650px  0 1px rgba(255,255,255,0.1),
+        110px 720px  0 1px rgba(255,255,255,0.07),   440px 800px  0 1px rgba(255,255,255,0.11),
+        200px 880px  0 1px rgba(255,255,255,0.09),   60px  950px  0 1px rgba(255,255,255,0.08),
+        370px 1000px 0 1px rgba(255,255,255,0.1),   500px 1100px 0 1px rgba(255,255,255,0.07),
+        /* tiny background dust */
+        30px  20px   0 0 rgba(255,255,255,0.06),
+        150px 60px   0 0 rgba(255,255,255,0.05),
+        270px 30px   0 0 rgba(255,255,255,0.04),
+        410px 70px   0 0 rgba(255,255,255,0.06),
+        50px  110px  0 0 rgba(255,255,255,0.05),
+        190px 130px  0 0 rgba(255,255,255,0.04),
+        330px 120px  0 0 rgba(255,255,255,0.06),
+        470px 140px  0 0 rgba(255,255,255,0.05),
+        90px  200px  0 0 rgba(255,255,255,0.04),
+        220px 180px  0 0 rgba(255,255,255,0.06),
+        380px 210px  0 0 rgba(255,255,255,0.05),
+        510px 190px  0 0 rgba(255,255,255,0.04),
+        140px 280px  0 0 rgba(255,255,255,0.06),
+        300px 270px  0 0 rgba(255,255,255,0.05),
+        450px 300px  0 0 rgba(255,255,255,0.04),
+        70px  340px  0 0 rgba(255,255,255,0.05),
+        250px 320px  0 0 rgba(255,255,255,0.06),
+        410px 340px  0 0 rgba(255,255,255,0.04);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.85; }
+      50%      { opacity: 1; }
     }
 
     .app {
-      max-width: 480px;
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
       margin: 0 auto;
-      padding: 28px 20px 0;
+      padding: 32px 24px 0;
     }
 
     .serif { font-family: 'DM Serif Display', serif; }
@@ -923,11 +996,11 @@
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 480px;
+      max-width: 640px;
       height: 64px;
-      background: rgba(28,27,24,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(10,12,20,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--line);
       display: flex;
       align-items: center;
